@@ -14,7 +14,7 @@ public class Client {
 
     public static void main(String[] args) {
         try {
-            String serverIP = "25.41.177.6"; // OR Hamachi IP
+            String serverIP = "25.41.178.189"; // OR Hamachi IP
 
             Registry registry = LocateRegistry.getRegistry(serverIP, 1099);
             HRMInterface stub = (HRMInterface) registry.lookup("HRMService");
@@ -23,10 +23,46 @@ public class Client {
             String response = stub.testConnection();
             System.out.println("Server says: " + response);
 
-            javax.swing.SwingUtilities.invokeLater(() -> {
-                new LoginClass(stub).setVisible(true);
-            });
-//
+            Scanner sc = new Scanner(System.in);
+
+            System.out.println("1. Register");
+            System.out.println("2. Login");
+
+            int choice = sc.nextInt();
+
+            if (choice == 1) {
+                System.out.print("First Name: ");
+                String f = sc.next();
+
+                System.out.print("Last Name: ");
+                String l = sc.next();
+
+                System.out.print("IC: ");
+                String ic = sc.next();
+
+                System.out.print("Password: ");
+                String p = sc.next();
+
+                System.out.println(stub.registerEmployee(f, l, ic, p));
+            }
+
+            if (choice == 2) {
+                System.out.print("IC: ");
+                String ic = sc.next();
+
+                System.out.print("Password: ");
+                String p = sc.next();
+
+                int empId = stub.login(ic, p);
+
+                if (empId != -1) {
+                    System.out.println("Login Success");
+
+                    System.out.println(stub.checkLeaveBalance(empId));
+                } else {
+                    System.out.println("Login Failed");
+                }
+            }
             
         } catch (Exception e) {
             e.printStackTrace();
