@@ -5,9 +5,13 @@
 package server;
 
 import shared.HRMInterface;
+import model.*;
+
 import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
 import java.sql.*;
+import java.time.temporal.ChronoUnit;
+import java.util.*;
 
 public class HRMImplementation extends UnicastRemoteObject implements HRMInterface {
 
@@ -15,127 +19,181 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
         super();
     }
 
-        // REGISTER
-    public String registerEmployee(String fname, String lname, String ic, String password)
-            throws RemoteException {
+    // 🔐 LOGIN
+    @Override
+    public User login(String email, String password) throws RemoteException {
 
-        try {
-            Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
 
-            String sql = "INSERT INTO employee(first_name,last_name,ic,password) VALUES (?,?,?,?)";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, fname);
-            ps.setString(2, lname);
-            ps.setString(3, ic);
-            ps.setString(4, password);
-            ps.executeUpdate();
+            String sql = "SELECT * FROM user WHERE email=? AND password=?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
 
-            return "Employee Registered";
+            stmt.setString(1, email);
+            stmt.setString(2, password);
 
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
-
-    // LOGIN
-    public int login(String ic, String password) throws RemoteException {
-        try {
-            Connection conn = DBConnection.getConnection();
-
-            String sql = "SELECT emp_id FROM employee WHERE ic=? AND password=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setString(1, ic);
-            ps.setString(2, password);
-
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt("emp_id");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
-    // APPLY LEAVE
-    public String applyLeave(int empId, String type, String start, String end)
-            throws RemoteException {
-
-        try {
-            Connection conn = DBConnection.getConnection();
-
-            String sql = "INSERT INTO leave_request(emp_id,leave_type,start_date,end_date) VALUES (?,?,?,?)";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, empId);
-            ps.setString(2, type);
-            ps.setString(3, start);
-            ps.setString(4, end);
-
-            ps.executeUpdate();
-
-            return "Leave Applied";
-
-        } catch (Exception e) {
-            return e.getMessage();
-        }
-    }
-
-    // VIEW STATUS
-    public String viewLeaveStatus(int empId) throws RemoteException {
-
-        StringBuilder result = new StringBuilder();
-
-        try {
-            Connection conn = DBConnection.getConnection();
-
-            String sql = "SELECT * FROM leave_request WHERE emp_id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, empId);
-
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                result.append("LeaveID: ").append(rs.getInt("leave_id"))
-                        .append(" Status: ").append(rs.getString("status"))
-                        .append("\n");
+                return new User(
+                        rs.getInt("user_id"),
+                        rs.getString("first_name"),
+                        rs.getString("last_name"),
+                        rs.getString("ic_passport_number"),
+                        rs.getString("email"),
+                        rs.getString("role")
+                );
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return result.toString();
+        return null;
     }
 
-    // CHECK BALANCE
-    public String checkLeaveBalance(int empId) throws RemoteException {
+    // 📊 CHECK BALANCE
+    @Override
+    public int checkLeaveBalance(int userId) throws RemoteException {
 
-        try {
-            Connection conn = DBConnection.getConnection();
+        try (Connection conn = DBConnection.getConnection()) {
 
-            String sql = "SELECT * FROM leave_balance WHERE emp_id=?";
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setInt(1, empId);
+            String sql = "SELECT total_leave - used_leave AS balance FROM leave_balance WHERE user_id=?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
 
-            ResultSet rs = ps.executeQuery();
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("balance");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    // 🏖️ APPLY LEAVE
+    @Override
+    public String applyLeave(LeaveApplication leave) throws RemoteException {
+
+        int days = (int) ChronoUnit.DAYS.between(
+                leave.getStartDate(), leave.getEndDate()) + 1;
+
+        try (Connection conn = DBConnection.getConnection()) {
+
+            String checkSql = "SELECT total_leave, used_leave FROM leave_balance WHERE user_id=?";
+            PreparedStatement checkStmt = conn.prepareStatement(checkSql);
+            checkStmt.setInt(1, leave.getUserId());
+
+            ResultSet rs = checkStmt.executeQuery();
 
             if (rs.next()) {
                 int total = rs.getInt("total_leave");
                 int used = rs.getInt("used_leave");
 
-                return "Remaining Leave: " + (total - used);
+                if (total - used < days) {
+                    return "❌ Not enough leave";
+                }
+
+                // Insert leave
+                String insertSql = "INSERT INTO leave_application(user_id, leave_type, start_date, end_date, reason, status, applied_date) VALUES (?, ?, ?, ?, ?, 'Pending', CURDATE())";
+                PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+
+                insertStmt.setInt(1, leave.getUserId());
+                insertStmt.setString(2, leave.getLeaveType());
+                insertStmt.setDate(3, java.sql.Date.valueOf(leave.getStartDate()));
+                insertStmt.setDate(4, java.sql.Date.valueOf(leave.getEndDate()));
+                insertStmt.setString(5, leave.getReason());
+
+                insertStmt.executeUpdate();
+
+                return "✅ Leave applied (Pending approval)";
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return "No record";
+        return "Error";
     }
+
+    // 🧑‍💼 HR VIEW ALL
+    @Override
+    public List<LeaveApplication> getAllLeaves() throws RemoteException {
+
+        List<LeaveApplication> list = new ArrayList<>();
+
+        try (Connection conn = DBConnection.getConnection()) {
+
+            String sql = "SELECT * FROM leave_application WHERE status = 'Pending'";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                list.add(new LeaveApplication(
+                        rs.getInt("leave_id"),
+                        rs.getInt("user_id"),
+                        rs.getString("leave_type"),
+                        rs.getDate("start_date").toLocalDate(),
+                        rs.getDate("end_date").toLocalDate(),
+                        rs.getString("reason")
+                ));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    // ✅ APPROVE / REJECT
+    @Override
+    public String updateLeaveStatus(int leaveId, String status) throws RemoteException {
+
+        try (Connection conn = DBConnection.getConnection()) {
+
+            String sql = "UPDATE leave_application SET status=? WHERE leave_id=?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setString(1, status);
+            stmt.setInt(2, leaveId);
+
+            stmt.executeUpdate();
+
+            return "✅ Updated to " + status;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "❌ Failed";
+    }
+
+    public User getUser(int userId) throws RemoteException {
+
+        try (Connection conn = DBConnection.getConnection()) {
+            String sql = "SELECT * FROM user WHERE user_id = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new User(
+                    rs.getInt("user_id"),
+                    rs.getString("first_name"),
+                    rs.getString("last_name"),
+                    rs.getString("ic_passport_number"),
+                    rs.getString("email"),
+                    rs.getString("role")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    } 
     
-    public String testConnection() throws RemoteException {
-        return "RMI Connection Successful!";
-    }
 }

@@ -4,24 +4,24 @@
  */
 package shared;
 
+import model.LeaveApplication;
+import model.User;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.List;
 
 public interface HRMInterface extends Remote {
-        // HR
-    String registerEmployee(String fname, String lname, String ic, String password)
-        throws RemoteException;
 
-    // Login
-    int login(String ic, String password) throws RemoteException;
+    User login(String email, String password) throws RemoteException;
 
-    // Employee
-    String applyLeave(int empId, String type, String start, String end)
-        throws RemoteException;
+    String applyLeave(LeaveApplication leave) throws RemoteException;
 
-    String viewLeaveStatus(int empId) throws RemoteException;
+    int checkLeaveBalance(int userId) throws RemoteException;
 
-    String checkLeaveBalance(int empId) throws RemoteException;
+    List<LeaveApplication> getAllLeaves() throws RemoteException;
+
+    String updateLeaveStatus(int leaveId, String status) throws RemoteException;
     
-    String testConnection() throws RemoteException;
+    User getUser(int userId) throws RemoteException;
 }

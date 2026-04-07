@@ -6,62 +6,33 @@ package client;
 
 
 import shared.HRMInterface;
+import model.*;
+import ui.Main;
+
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Scanner;
 
 public class Client {
 
     public static void main(String[] args) {
         try {
-            String serverIP = "25.41.178.189"; // OR Hamachi IP
+            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            HRMInterface service = (HRMInterface) registry.lookup("HRMService");
 
-            Registry registry = LocateRegistry.getRegistry(serverIP, 1099);
-            HRMInterface stub = (HRMInterface) registry.lookup("HRMService");
+            javax.swing.SwingUtilities.invokeLater(() -> {
+                Main mainUI = new Main(service);
+                mainUI.setVisible(true);
+            });
             
-            // test server connection 
-            String response = stub.testConnection();
-            System.out.println("Server says: " + response);
-
-            Scanner sc = new Scanner(System.in);
-
-            System.out.println("1. Register");
-            System.out.println("2. Login");
-
-            int choice = sc.nextInt();
-
-            if (choice == 1) {
-                System.out.print("First Name: ");
-                String f = sc.next();
-
-                System.out.print("Last Name: ");
-                String l = sc.next();
-
-                System.out.print("IC: ");
-                String ic = sc.next();
-
-                System.out.print("Password: ");
-                String p = sc.next();
-
-                System.out.println(stub.registerEmployee(f, l, ic, p));
-            }
-
-            if (choice == 2) {
-                System.out.print("IC: ");
-                String ic = sc.next();
-
-                System.out.print("Password: ");
-                String p = sc.next();
-
-                int empId = stub.login(ic, p);
-
-                if (empId != -1) {
-                    System.out.println("Login Success");
-
-                    System.out.println(stub.checkLeaveBalance(empId));
-                } else {
-                    System.out.println("Login Failed");
-                }
+            System.out.println("Service: " + service);
+            List<LeaveApplication> leaves = service.getAllLeaves();
+            System.out.println("Leaves count: " + leaves.size());
+            for (LeaveApplication leave : leaves) {
+                User user = service.getUser(leave.getUserId());
+                System.out.println("Leave: " + leave.getLeaveType() + ", User: " + (user != null ? user.getName() : "NULL"));
             }
             
         } catch (Exception e) {
