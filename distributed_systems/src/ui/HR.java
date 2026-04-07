@@ -14,6 +14,7 @@ import model.LeaveApplication;
  */
 public class HR extends javax.swing.JFrame {
     private HRMInterface service;
+    private User loggedInUser;
     
 //    private void loadLeaveApplications() {
 //        try {
@@ -73,8 +74,9 @@ public class HR extends javax.swing.JFrame {
     /**
      * Creates new form HR
      */
-    public HR(HRMInterface service) {
+    public HR(HRMInterface service, User user) {
         this.service = service;
+        this.loggedInUser = user;
         initComponents();
         loadLeaveApplications();
     }

@@ -196,4 +196,165 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
         return null;
     } 
     
+    public String registerUser(User user) throws RemoteException {
+
+        try {
+            Connection conn = DBConnection.getConnection();
+
+            String sql = "INSERT INTO user(first_name,last_name,ic_passport_number,email,password,role) VALUES (?,?,?,?,?,?)";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getIc());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getPassword());
+            ps.setString(6, user.getRole());
+
+            ps.executeUpdate();
+
+            return "User Registered Successfully";
+
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+    
+    public String updateUser(User user) throws RemoteException {
+        try {
+            Connection conn = DBConnection.getConnection();
+
+            String sql = "UPDATE user SET first_name=?, last_name=?, ic_passport_number=?, email=? WHERE user_id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, user.getFirstName());
+            ps.setString(2, user.getLastName());
+            ps.setString(3, user.getIc());
+            ps.setString(4, user.getEmail());
+            ps.setInt(5, user.getUserId());
+
+            ps.executeUpdate();
+
+            
+            return "Profile Updated Successfully";
+
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+        
+    @Override
+    public PersonalDetail getPersonalDetailByUserId(int userId) throws RemoteException {
+
+        try (Connection conn = DBConnection.getConnection()) {
+
+            String sql = "SELECT * FROM personaldetail WHERE user_id=?";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, userId);
+
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return new PersonalDetail(
+                        rs.getString("phone_number"),
+                        rs.getString("address"),
+                        rs.getString("date_of_birth"),
+                        rs.getString("contact_name"),
+                        rs.getString("relationship"),
+                        rs.getString("contact_number")
+                );
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
+    public String updatePersonalDetail(PersonalDetail detail) throws RemoteException {
+        try {
+            Connection conn = DBConnection.getConnection();
+
+            String checkSql = "SELECT * FROM personaldetail WHERE user_id=?";
+            PreparedStatement checkPs = conn.prepareStatement(checkSql);
+            checkPs.setInt(1, detail.getUserId());
+
+            ResultSet rs = checkPs.executeQuery();
+
+            if (rs.next()) {
+                String updateSql = "UPDATE personaldetail SET phone_number=?, address=?, date_of_birth=?, contact_name=?, relationship=?, contact_number=? WHERE user_id=?";
+                PreparedStatement ps = conn.prepareStatement(updateSql);
+
+                ps.setString(1, detail.getPhoneNumber());
+                ps.setString(2, detail.getAddress());
+                ps.setString(3, detail.getDateOfBirth());
+                ps.setString(4, detail.getContactName());
+                ps.setString(5, detail.getRelationship());
+                ps.setString(6, detail.getContactNumber());
+                ps.setInt(7, detail.getUserId());
+
+                ps.executeUpdate();
+
+                return "Personal Detail Updated Successfully";
+
+            } else {
+                String insertSql = "INSERT INTO personaldetail(user_id, phone_number, address, date_of_birth, contact_name, relationship, contact_number) VALUES (?,?,?,?,?,?,?)";
+                PreparedStatement ps = conn.prepareStatement(insertSql);
+
+                ps.setInt(1, detail.getUserId());
+                ps.setString(2, detail.getPhoneNumber());
+                ps.setString(3, detail.getAddress());
+                ps.setString(4, detail.getDateOfBirth());
+                ps.setString(5, detail.getContactName());
+                ps.setString(6, detail.getRelationship());
+                ps.setString(7, detail.getContactNumber());
+
+                ps.executeUpdate();
+
+                return "Personal Detail Added Successfully";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
+    
+      public String changePassword(int userId, String oldPass, String newPass) throws RemoteException {
+
+        try {
+            Connection conn = DBConnection.getConnection();
+
+            String checkSql = "SELECT password FROM user WHERE user_id=?";
+            PreparedStatement checkPs = conn.prepareStatement(checkSql);
+            checkPs.setInt(1, userId);
+
+            ResultSet rs = checkPs.executeQuery();
+
+            if (!rs.next()) {
+                return "User Not Found";
+            }
+
+            String dbPassword = rs.getString("password");
+
+            if (!dbPassword.equals(oldPass)) {
+                return "Old Password Incorrect";
+            }
+
+            String updateSql = "UPDATE user SET password=? WHERE user_id=?";
+            PreparedStatement ps = conn.prepareStatement(updateSql);
+
+            ps.setString(1, newPass);
+            ps.setInt(2, userId);
+
+            int rows = ps.executeUpdate();
+
+            return rows > 0 ? "Password Changed Successfully" : "Update Failed";
+
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
 }

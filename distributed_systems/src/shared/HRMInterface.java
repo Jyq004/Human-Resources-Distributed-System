@@ -6,6 +6,7 @@ package shared;
 
 import model.LeaveApplication;
 import model.User;
+import model.PersonalDetail;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -24,4 +25,14 @@ public interface HRMInterface extends Remote {
     String updateLeaveStatus(int leaveId, String status) throws RemoteException;
     
     User getUser(int userId) throws RemoteException;
+    
+    String registerUser(User user) throws RemoteException;
+    
+    String updateUser(User user) throws RemoteException;
+    
+    PersonalDetail getPersonalDetailByUserId(int userId) throws RemoteException;
+    
+    String updatePersonalDetail(PersonalDetail detail) throws RemoteException;
+    
+    String changePassword(int userId, String oldPass, String newPass) throws RemoteException;
 }
