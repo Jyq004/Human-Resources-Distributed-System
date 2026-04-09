@@ -4,7 +4,10 @@
  */
 package ui;
 
+import java.io.*;
+import java.net.*;
 import javax.swing.JOptionPane;
+import model.Request;
 import model.User;
 import shared.HRMInterface;
 
@@ -54,7 +57,7 @@ public class Register extends javax.swing.JFrame {
         rolecombobox = new javax.swing.JComboBox<>();
         role = new javax.swing.JLabel();
         login1 = new javax.swing.JButton();
-        login2 = new javax.swing.JButton();
+        registerbutton = new javax.swing.JButton();
         login3 = new javax.swing.JButton();
 
         login.setText("Login");
@@ -120,10 +123,10 @@ public class Register extends javax.swing.JFrame {
             }
         });
 
-        login2.setText("Register");
-        login2.addActionListener(new java.awt.event.ActionListener() {
+        registerbutton.setText("Register");
+        registerbutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                login2ActionPerformed(evt);
+                registerbuttonActionPerformed(evt);
             }
         });
 
@@ -148,7 +151,7 @@ public class Register extends javax.swing.JFrame {
                                 .addGroup(layout.createSequentialGroup()
                                     .addComponent(login3)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                                    .addComponent(login2)
+                                    .addComponent(registerbutton)
                                     .addGap(30, 30, 30)
                                     .addComponent(login1))
                                 .addGroup(layout.createSequentialGroup()
@@ -203,7 +206,7 @@ public class Register extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(login3)
-                    .addComponent(login2)
+                    .addComponent(registerbutton)
                     .addComponent(login1))
                 .addContainerGap(40, Short.MAX_VALUE))
         );
@@ -261,9 +264,9 @@ public class Register extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_login3ActionPerformed
 
-    private void login2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login2ActionPerformed
+    private void registerbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registerbuttonActionPerformed
         // TODO add your handling code here:
-        try {
+        try{
             String fnameText = fnamefield.getText().trim();
             String lnameText = lnamefield.getText().trim();
             String icText = identificationfield.getText().trim();
@@ -271,7 +274,6 @@ public class Register extends javax.swing.JFrame {
             String passwordText = passwordfield.getText().trim();
             String roleText = rolecombobox.getSelectedItem().toString();
 
-            // 1. Empty check
             if (fnameText.isEmpty() || lnameText.isEmpty() || icText.isEmpty() ||
                 emailText.isEmpty() || passwordText.isEmpty()) {
 
@@ -300,27 +302,53 @@ public class Register extends javax.swing.JFrame {
             }
 
             User user = new User(fnameText, lnameText, icText, emailText, passwordText, roleText);
+            
+            try(Socket socket = new Socket("localhost", 5000)){
+                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
-            // CALL SERVER
-            String result = service.registerUser(user);
+                Request req = new Request("REGISTER", user);
+                out.writeObject(req);
+                out.flush();
 
-            if (result.contains("Successfully")) {
-                JOptionPane.showMessageDialog(this, result, "Success", JOptionPane.INFORMATION_MESSAGE);
-                fnamefield.setText("");
-                lnamefield.setText("");
-                identificationfield.setText("");
-                emailfield.setText("");
-                passwordfield.setText("");
-                rolecombobox.setSelectedIndex(0);
-            } else {
-                JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.ERROR_MESSAGE);
+                String result = (String) in.readObject();
+
+                if (result.contains("Successfully")) {
+                    JOptionPane.showMessageDialog(this, result, "Success", JOptionPane.INFORMATION_MESSAGE);
+                    String role = loggedInUser.getRole();
+
+                    if ("HR".equalsIgnoreCase(role)) {
+
+                        HR_Main hrmainpage = new HR_Main(service, loggedInUser);
+                        hrmainpage.setVisible(true);
+
+                    } else if ("Employee".equalsIgnoreCase(role)) {
+
+                        Employee_Main empMain = new Employee_Main(service, loggedInUser);
+                        empMain.setVisible(true);
+
+                    } else {
+
+                        JOptionPane.showMessageDialog(this,
+                                "Unknown role: " + role,
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                
+                out.close();
+                in.close();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error occurred", "Error", JOptionPane.ERROR_MESSAGE);  
         }
-    }//GEN-LAST:event_login2ActionPerformed
+    }//GEN-LAST:event_registerbuttonActionPerformed
 
     private void login1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login1ActionPerformed
         // TODO add your handling code here:
@@ -368,10 +396,10 @@ public class Register extends javax.swing.JFrame {
     private javax.swing.JTextField lnamefield;
     private javax.swing.JButton login;
     private javax.swing.JButton login1;
-    private javax.swing.JButton login2;
     private javax.swing.JButton login3;
     private javax.swing.JLabel password;
     private javax.swing.JTextField passwordfield;
+    private javax.swing.JButton registerbutton;
     private javax.swing.JLabel role;
     private javax.swing.JComboBox<String> rolecombobox;
     // End of variables declaration//GEN-END:variables

@@ -32,7 +32,7 @@
                           <Group type="102" attributes="0">
                               <Component id="login3" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                              <Component id="login2" min="-2" max="-2" attributes="0"/>
+                              <Component id="updatebutton" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                               <Component id="login4" min="-2" max="-2" attributes="0"/>
                           </Group>
@@ -89,7 +89,7 @@
               <EmptySpace pref="30" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="login3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="login2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="updatebutton" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="login4" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
@@ -154,12 +154,12 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="login3ActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="login2">
+    <Component class="javax.swing.JButton" name="updatebutton">
       <Properties>
         <Property name="text" type="java.lang.String" value="Update"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="login2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updatebuttonActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="login4">

@@ -4,6 +4,8 @@
  */
 package ui;
 
+import java.io.*;
+import java.net.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -11,6 +13,7 @@ import java.time.format.ResolverStyle;
 import javax.swing.JOptionPane;
 import model.User;
 import model.PersonalDetail;
+import model.Request;
 import shared.HRMInterface;
 
 /**
@@ -277,7 +280,6 @@ public class UpdatePersonalDetailsPage extends javax.swing.JFrame {
             String relationText = relationfield.getText().trim();
             String connumText = connumfield.getText().trim();
 
-            // 1. Empty check
             if (phoneText.isEmpty() || addressText.isEmpty() || dobText.isEmpty() ||
                 connameText.isEmpty() || relationText.isEmpty() || connumText.isEmpty()) {
 
@@ -306,18 +308,28 @@ public class UpdatePersonalDetailsPage extends javax.swing.JFrame {
 
             PersonalDetail pd = new PersonalDetail(loggedInUser.getUserId(), phoneText, addressText, dobText, connameText, relationText, connumText);
             
-            String result = service.updatePersonalDetail(pd);
-            
-            if (result.contains("Successfully")) {
-                JOptionPane.showMessageDialog(this, result, "Success", JOptionPane.INFORMATION_MESSAGE);
-                PersonalDetail updatedPersonal = service.getPersonalDetailByUserId(loggedInUser.getUserId());
-                PersonalDetailsPage personalpage = new PersonalDetailsPage(service, loggedInUser, updatedPersonal);
-                personalpage.setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            try(Socket socket = new Socket("localhost", 5000)){
+                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
+                Request req = new Request("UPDATE_PERSONAL_DETAIL", pd);
+                out.writeObject(req);
+                out.flush();
+                
+                String result = (String) in.readObject();
+            
+                if (result.contains("Successfully")) {
+                    JOptionPane.showMessageDialog(this, result, "Success", JOptionPane.INFORMATION_MESSAGE);
+                    PersonalDetail updatedPersonal = service.getPersonalDetailByUserId(loggedInUser.getUserId());
+                    PersonalDetailsPage personalpage = new PersonalDetailsPage(service, loggedInUser, updatedPersonal);
+                    personalpage.setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                out.close();
+                in.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error occurred", "Error", JOptionPane.ERROR_MESSAGE);  

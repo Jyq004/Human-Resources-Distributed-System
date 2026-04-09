@@ -4,7 +4,10 @@
  */
 package ui;
 
+import java.io.*;
+import java.net.*;
 import javax.swing.JOptionPane;
+import model.Request;
 import model.User;
 import shared.HRMInterface;
 
@@ -53,7 +56,7 @@ public class UpdateProfile extends javax.swing.JFrame {
         email = new javax.swing.JLabel();
         emailfield = new javax.swing.JTextField();
         login3 = new javax.swing.JButton();
-        login2 = new javax.swing.JButton();
+        updatebutton = new javax.swing.JButton();
         login4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -100,10 +103,10 @@ public class UpdateProfile extends javax.swing.JFrame {
             }
         });
 
-        login2.setText("Update");
-        login2.addActionListener(new java.awt.event.ActionListener() {
+        updatebutton.setText("Update");
+        updatebutton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                login2ActionPerformed(evt);
+                updatebuttonActionPerformed(evt);
             }
         });
 
@@ -127,7 +130,7 @@ public class UpdateProfile extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(login3)
                                 .addGap(30, 30, 30)
-                                .addComponent(login2)
+                                .addComponent(updatebutton)
                                 .addGap(33, 33, 33)
                                 .addComponent(login4))
                             .addGroup(layout.createSequentialGroup()
@@ -170,7 +173,7 @@ public class UpdateProfile extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(login3)
-                    .addComponent(login2)
+                    .addComponent(updatebutton)
                     .addComponent(login4))
                 .addGap(40, 40, 40))
         );
@@ -201,7 +204,7 @@ public class UpdateProfile extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_login3ActionPerformed
 
-    private void login2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login2ActionPerformed
+    private void updatebuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatebuttonActionPerformed
         // TODO add your handling code here:
         try {
             String fnameText = fnamefield.getText().trim();
@@ -209,7 +212,6 @@ public class UpdateProfile extends javax.swing.JFrame {
             String icText = identificationfield.getText().trim();
             String emailText = emailfield.getText().trim();
 
-            // 1. Empty check
             if (fnameText.isEmpty() || lnameText.isEmpty() || icText.isEmpty() ||
                 emailText.isEmpty()) {
 
@@ -229,23 +231,33 @@ public class UpdateProfile extends javax.swing.JFrame {
 
             User user = new User(loggedInUser.getUserId(), fnameText, lnameText, icText, emailText);
             
-            String result = service.updateUser(user);
-            
-            if (result.contains("Successfully")) {
-                JOptionPane.showMessageDialog(this, result, "Success", JOptionPane.INFORMATION_MESSAGE);
-                User updatedUser = service.getUser(loggedInUser.getUserId());
-                Profile profilepage = new Profile(service, updatedUser);
-                profilepage.setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.ERROR_MESSAGE);
-            }
+            try(Socket socket = new Socket("localhost", 5000)){
+                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
+                Request req = new Request("UPDATE_PROFILE", user);
+                out.writeObject(req);
+                out.flush();
+                
+                String result = (String) in.readObject();
+                
+                if (result.contains("Successfully")) {
+                    JOptionPane.showMessageDialog(this, result, "Success", JOptionPane.INFORMATION_MESSAGE);
+                    User updatedUser = service.getUser(loggedInUser.getUserId());
+                    Profile profilepage = new Profile(service, updatedUser);
+                    profilepage.setVisible(true);
+                    this.dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.ERROR_MESSAGE);
+                }    
+                out.close();
+                in.close();
+            }
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error occurred", "Error", JOptionPane.ERROR_MESSAGE);  
         }
-    }//GEN-LAST:event_login2ActionPerformed
+    }//GEN-LAST:event_updatebuttonActionPerformed
 
     private void login4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login4ActionPerformed
         // TODO add your handling code here:
@@ -307,8 +319,8 @@ public class UpdateProfile extends javax.swing.JFrame {
     private javax.swing.JTextField identificationfield;
     private javax.swing.JLabel lname;
     private javax.swing.JTextField lnamefield;
-    private javax.swing.JButton login2;
     private javax.swing.JButton login3;
     private javax.swing.JButton login4;
+    private javax.swing.JButton updatebutton;
     // End of variables declaration//GEN-END:variables
 }

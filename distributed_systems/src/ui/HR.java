@@ -98,6 +98,7 @@ public class HR extends javax.swing.JFrame {
         reject = new javax.swing.JButton();
         employeeid = new javax.swing.JLabel();
         userid = new javax.swing.JTextField();
+        login1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -141,6 +142,13 @@ public class HR extends javax.swing.JFrame {
             }
         });
 
+        login1.setText("Back");
+        login1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                login1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -155,6 +163,8 @@ public class HR extends javax.swing.JFrame {
                         .addComponent(generatereport))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(login1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(employeeid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(approve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -180,7 +190,8 @@ public class HR extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(reject)
-                    .addComponent(approve))
+                    .addComponent(approve)
+                    .addComponent(login1))
                 .addContainerGap())
         );
 
@@ -218,6 +229,32 @@ public class HR extends javax.swing.JFrame {
         }
     }
     }//GEN-LAST:event_rejectActionPerformed
+
+    private void login1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login1ActionPerformed
+        // TODO add your handling code here:
+        String role = loggedInUser.getRole();
+
+        if ("HR".equalsIgnoreCase(role)) {
+
+            HR_Main hrmainpage = new HR_Main(service, loggedInUser);
+            hrmainpage.setVisible(true);
+
+        } else if ("Employee".equalsIgnoreCase(role)) {
+
+            Employee_Main empMain = new Employee_Main(service, loggedInUser);
+            empMain.setVisible(true);
+
+        } else {
+
+            JOptionPane.showMessageDialog(this,
+                    "Unknown role: " + role,
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        this.dispose();
+    }//GEN-LAST:event_login1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -260,6 +297,7 @@ public class HR extends javax.swing.JFrame {
     private javax.swing.JButton generatereport;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JButton login1;
     private javax.swing.JButton reject;
     private javax.swing.JLabel title;
     private javax.swing.JTextField userid;

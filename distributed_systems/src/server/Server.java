@@ -7,21 +7,92 @@ package server;
 import shared.HRMInterface;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.net.*;
+import java.io.*;
+import model.Request;
+import model.User;
+import model.LeaveApplication;
+import model.PersonalDetail;
 
 public class Server {
 
     public static void main(String[] args) {
-        try {
-            System.setProperty("java.rmi.server.hostname", "localhost");
 
-            HRMInterface service = new HRMImplementation();
+        // =========================
+        // 1. RMI SERVER (KEEP THIS)
+        // =========================
+        new Thread(() -> {
+            try {
+                System.setProperty("java.rmi.server.hostname", "localhost");
 
-            Registry registry = LocateRegistry.createRegistry(1099);
-            registry.rebind("HRMService", service);
+                HRMInterface service = new HRMImplementation();
 
-            System.out.println("HRM RMI Server Running...");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+                Registry registry = LocateRegistry.createRegistry(1099);
+                registry.rebind("HRMService", service);
+
+                System.out.println("RMI Server Running...");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try (ServerSocket serverSocket = new ServerSocket(5000)) {
+
+                HRMImplementation impl = new HRMImplementation();
+
+                while (true) {
+                    Socket socket = serverSocket.accept();
+
+                    new Thread(() -> {
+                        try (
+                            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                        ) {
+
+                            out.flush();
+
+                            Request req = (Request) in.readObject();
+                            String result = "";
+
+                            switch (req.getAction()) {
+
+                                case "REGISTER":
+                                    User register = (User) req.getData();
+                                    result = impl.registerUser(register);
+                                    break;
+
+                                case "UPDATE_PROFILE":
+                                    User profile = (User) req.getData();
+                                    result = impl.updateUser(profile);
+                                    break;
+
+                                case "UPDATE_PERSONAL_DETAIL":
+                                    PersonalDetail pd = (PersonalDetail) req.getData();
+                                    result = impl.updatePersonalDetail(pd);
+                                    break;
+
+                                case "APPLY_LEAVE":
+                                    LeaveApplication leave = (LeaveApplication) req.getData();
+                                    result = impl.applyLeave(leave);
+                                    break;
+
+                                default:
+                                    result = "Invalid action";
+                            }
+
+                            out.writeObject(result);
+                            out.flush();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }).start();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
-}
+}               

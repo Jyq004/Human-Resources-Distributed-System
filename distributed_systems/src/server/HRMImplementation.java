@@ -116,7 +116,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
             e.printStackTrace();
         }
 
-        return "Error";
+        return "No record";
     }
 
     // 🧑‍💼 HR VIEW ALL

@@ -4,12 +4,16 @@
  */
 package ui;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import javax.swing.JOptionPane;
 import model.LeaveApplication;
+import model.Request;
 import model.User;
 import shared.HRMInterface;
 
@@ -98,7 +102,7 @@ public class ApplyLeave extends javax.swing.JFrame {
 
         email2.setText("Leave Type");
 
-        leavecombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Select Type --", "Annual", "Sick", "Others" }));
+        leavecombobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Select Type --", "Annual", "Sick", "etc." }));
 
         email3.setText("Start Date (YYYY-MM--DD)");
 
@@ -300,37 +304,45 @@ public class ApplyLeave extends javax.swing.JFrame {
                 return;
             }
 
-            // validate end date vs start date
             if (endDate.isBefore(startDate)) {JOptionPane.showMessageDialog(this, "End date cannot be before start date!", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
             LeaveApplication la = new LeaveApplication(loggedInUser.getUserId(), leaveText, startDate, endDate, reasonText);
 
-            String result = service.applyLeave(la);
+            try(Socket socket = new Socket("localhost", 5000)){
+                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
 
-            if (result.contains("Leave applied")) {
-                JOptionPane.showMessageDialog(this, result, "Success", JOptionPane.INFORMATION_MESSAGE);
+                Request req = new Request("APPLY_LEAVE", la);
+                out.writeObject(req);
+                out.flush();
+                
+                String result = (String) in.readObject();
 
-                String role = loggedInUser.getRole();
+                if (result.contains("Leave applied")) {
+                    JOptionPane.showMessageDialog(this, result, "Success", JOptionPane.INFORMATION_MESSAGE);
 
-                if ("HR".equalsIgnoreCase(role)) {
-                    new HR_Main(service, loggedInUser).setVisible(true);
-                } else if ("Employee".equalsIgnoreCase(role)) {
-                    new Employee_Main(service, loggedInUser).setVisible(true);
+                    String role = loggedInUser.getRole();
+
+                    if ("HR".equalsIgnoreCase(role)) {
+                        new HR_Main(service, loggedInUser).setVisible(true);
+                    } else if ("Employee".equalsIgnoreCase(role)) {
+                        new Employee_Main(service, loggedInUser).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(this,
+                                "Unknown role: " + role,
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    this.dispose();
                 } else {
-                    JOptionPane.showMessageDialog(this,
-                            "Unknown role: " + role,
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                    return;
+                    JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.ERROR_MESSAGE);
                 }
-
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.ERROR_MESSAGE);
+                out.close();
+                in.close();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error occurred", "Error", JOptionPane.ERROR_MESSAGE);

@@ -158,7 +158,7 @@
             <StringItem index="0" value="-- Select Type --"/>
             <StringItem index="1" value="Annual"/>
             <StringItem index="2" value="Sick"/>
-            <StringItem index="3" value="Others"/>
+            <StringItem index="3" value="etc."/>
           </StringArray>
         </Property>
       </Properties>
