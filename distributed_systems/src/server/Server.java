@@ -17,10 +17,6 @@ import model.PersonalDetail;
 public class Server {
 
     public static void main(String[] args) {
-
-        // =========================
-        // 1. RMI SERVER (KEEP THIS)
-        // =========================
         new Thread(() -> {
             try {
                 System.setProperty("java.rmi.server.hostname", "localhost");
