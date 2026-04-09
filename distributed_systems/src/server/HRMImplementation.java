@@ -94,11 +94,11 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
                 int used = rs.getInt("used_leave");
 
                 if (total - used < days) {
-                    return "❌ Not enough leave";
+                    return "Not enough leave";
                 }
 
                 // Insert leave
-                String insertSql = "INSERT INTO leave_application(user_id, leave_type, start_date, end_date, reason, status, applied_date) VALUES (?, ?, ?, ?, ?, 'Pending', CURDATE())";
+                String insertSql = "INSERT INTO leave_application(user_id, leave_type, start_date, end_date, reason) VALUES (?, ?, ?, ?, ?)";
                 PreparedStatement insertStmt = conn.prepareStatement(insertSql);
 
                 insertStmt.setInt(1, leave.getUserId());
@@ -109,7 +109,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
 
                 insertStmt.executeUpdate();
 
-                return "✅ Leave applied (Pending approval)";
+                return "Leave applied (Pending approval)";
             }
 
         } catch (Exception e) {

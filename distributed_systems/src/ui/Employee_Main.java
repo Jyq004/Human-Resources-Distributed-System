@@ -216,6 +216,9 @@ public class Employee_Main extends javax.swing.JFrame {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
+        ApplyLeave leavepage = new ApplyLeave(service, loggedInUser);
+        leavepage.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
