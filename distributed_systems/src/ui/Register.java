@@ -303,9 +303,13 @@ public class Register extends javax.swing.JFrame {
 
             User user = new User(fnameText, lnameText, icText, emailText, passwordText, roleText);
             
-            try(Socket socket = new Socket("localhost", 5000)){
+            try (
+                Socket socket = new Socket("localhost", 5000);
                 ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            ) {
+
+                out.flush();
 
                 Request req = new Request("REGISTER", user);
                 out.writeObject(req);
@@ -340,9 +344,6 @@ public class Register extends javax.swing.JFrame {
                 } else {
                     JOptionPane.showMessageDialog(this, result, "Error", JOptionPane.ERROR_MESSAGE);
                 }
-                
-                out.close();
-                in.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
