@@ -203,7 +203,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
 
             String sql = "INSERT INTO user(first_name,last_name,ic_passport_number,email,password,role) VALUES (?,?,?,?,?,?)";
 
-            PreparedStatement ps = conn.prepareStatement(sql);
+            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
             ps.setString(1, user.getFirstName());
             ps.setString(2, user.getLastName());
@@ -213,6 +213,22 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
             ps.setString(6, user.getRole());
 
             ps.executeUpdate();
+
+            ResultSet rs = ps.getGeneratedKeys();
+            int userId = 0;
+
+            if (rs.next()) {
+                userId = rs.getInt(1);
+            }
+
+            String leaveSql = "INSERT INTO leave_balance (user_id, total_leave, used_leave) VALUES (?, ?, ?)";
+
+            PreparedStatement leavePs = conn.prepareStatement(leaveSql);
+            leavePs.setInt(1, userId);
+            leavePs.setInt(2, 14);
+            leavePs.setInt(3, 0);
+
+            leavePs.executeUpdate();
 
             return "User Registered Successfully";
 
