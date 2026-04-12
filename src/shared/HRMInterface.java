@@ -4,12 +4,11 @@
  */
 package shared;
 
-import model.LeaveApplication;
-import model.User;
-
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import model.LeaveApplication;
+import model.User;
 
 public interface HRMInterface extends Remote {
 
@@ -24,4 +23,9 @@ public interface HRMInterface extends Remote {
     String updateLeaveStatus(int leaveId, String status) throws RemoteException;
     
     User getUser(int userId) throws RemoteException;
+    
+    // (RYAN) Yearly Leave Report Generation
+    String generateIndividualReport(int userId, int year) throws RemoteException;
+    
+    String generateCompanyReport(int year) throws RemoteException;
 }

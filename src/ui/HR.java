@@ -115,6 +115,11 @@ public class HR extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         generatereport.setText("Generate Report");
+        generatereport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                generatereportActionPerformed(evt);
+            }
+        });
 
         approve.setText("Approve");
         approve.addActionListener(new java.awt.event.ActionListener() {
@@ -216,6 +221,10 @@ public class HR extends javax.swing.JFrame {
         }
     }
     }//GEN-LAST:event_rejectActionPerformed
+
+    private void generatereportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generatereportActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_generatereportActionPerformed
 
     /**
      * @param args the command line arguments
