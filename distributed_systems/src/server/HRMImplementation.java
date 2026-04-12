@@ -98,7 +98,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
                 }
 
                 // Insert leave
-                String insertSql = "INSERT INTO leave_application(user_id, leave_type, start_date, end_date, reason) VALUES (?, ?, ?, ?, ?)";
+                String insertSql = "INSERT INTO leave_application(user_id, leave_type, start_date, end_date, reason, status, applied_date) VALUES (?, ?, ?, ?, ?, 'Pending', CURDATE())";
                 PreparedStatement insertStmt = conn.prepareStatement(insertSql);
 
                 insertStmt.setInt(1, leave.getUserId());
