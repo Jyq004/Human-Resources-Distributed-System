@@ -373,4 +373,60 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
             return e.getMessage();
         }
     }
+
+    // VIEW LEAVE HISTORY AND VIEW LEAVE STATUS
+        @Override
+    public List<LeaveApplication> getLeaveHistory(int userId, String status) throws RemoteException {
+
+        List<LeaveApplication> list = new ArrayList<>();
+
+        try (Connection conn = DBConnection.getConnection()) {
+
+            String sql;
+            PreparedStatement stmt;
+
+            if (status.equalsIgnoreCase("HISTORY")) {
+
+                sql = "SELECT * FROM leave_application WHERE user_id=? AND status IN ('Approved','Rejected')";
+                stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, userId);
+
+            }
+
+            else if (status.equalsIgnoreCase("ALL")) {
+
+                sql = "SELECT * FROM leave_application WHERE user_id=?";
+                stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, userId);
+
+            }
+
+            else {
+
+                sql = "SELECT * FROM leave_application WHERE user_id=? AND status=?";
+                stmt = conn.prepareStatement(sql);
+                stmt.setInt(1, userId);
+                stmt.setString(2, status);
+            }
+
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                list.add(new LeaveApplication(
+                     // rs.getInt("leave_id"),
+                        rs.getInt("user_id"),
+                        rs.getString("leave_type"),
+                        rs.getDate("start_date").toLocalDate(),
+                        rs.getDate("end_date").toLocalDate(),
+                        rs.getString("reason"),
+                        rs.getString("status")
+                ));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
 }

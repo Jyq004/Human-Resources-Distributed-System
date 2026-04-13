@@ -35,4 +35,8 @@ public interface HRMInterface extends Remote {
     String updatePersonalDetail(PersonalDetail detail) throws RemoteException;
     
     String changePassword(int userId, String oldPass, String newPass) throws RemoteException;
+    
+    List<LeaveApplication> getLeaveHistory(int userId, String status) throws RemoteException;
 }
+
+
