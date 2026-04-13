@@ -7,6 +7,7 @@
 package ui;
 
 import shared.HRMInterface;
+import model.User;
 
 /**
  *
@@ -16,12 +17,14 @@ public class ReportGeneration extends javax.swing.JFrame {
 
 
 private HRMInterface service;
+private User loggedInUser;
     /**
      * Creates new form ReportGeneration
      * @param service
      */
-public ReportGeneration(HRMInterface service) {
+public ReportGeneration(HRMInterface service, User loggedInUser) {
     this.service = service;
+    this.loggedInUser = loggedInUser;
     initComponents();
 }
 
@@ -48,6 +51,11 @@ public ReportGeneration(HRMInterface service) {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         BackButton.setText("Back");
+        BackButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackButtonActionPerformed(evt);
+            }
+        });
 
         YearField.setText("jTextField1");
         YearField.addActionListener(new java.awt.event.ActionListener() {
@@ -194,6 +202,21 @@ public ReportGeneration(HRMInterface service) {
         jTextArea1.setText("Error: " + e.getMessage());
     }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void BackButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackButtonActionPerformed
+        // TODO add your handling code here:
+            try {
+        // Go back to HR page (change if needed)
+        HR hrPage = new HR(service, loggedInUser);
+        hrPage.setVisible(true);
+
+        // Close current page
+        this.dispose();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    }//GEN-LAST:event_BackButtonActionPerformed
 
     /**
      * @param args the command line arguments

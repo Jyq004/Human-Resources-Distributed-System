@@ -19,7 +19,7 @@ public class Client {
 
     public static void main(String[] args) {
         try {
-            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
+            Registry registry = LocateRegistry.getRegistry("172.20.10.2", 1099);
             HRMInterface service = (HRMInterface) registry.lookup("HRMService");
 
             javax.swing.SwingUtilities.invokeLater(() -> {

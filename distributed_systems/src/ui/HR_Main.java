@@ -401,7 +401,7 @@ public class HR_Main extends javax.swing.JFrame {
         // TODO add your handling code here:
             try {
         // Open ReportGeneration page
-        ReportGeneration reportPage = new ReportGeneration(service);
+        ReportGeneration reportPage = new ReportGeneration(service, loggedInUser);
         reportPage.setVisible(true);
 
         // OPTIONAL: close current window

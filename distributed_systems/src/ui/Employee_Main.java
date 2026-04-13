@@ -324,6 +324,17 @@ public class Employee_Main extends javax.swing.JFrame {
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
         // TODO add your handling code here:
+                    try {
+        // Open ReportGeneration page
+        ReportGeneration reportPage = new ReportGeneration(service, loggedInUser);
+        reportPage.setVisible(true);
+
+        // OPTIONAL: close current window
+        this.dispose();
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
     }//GEN-LAST:event_jButton13ActionPerformed
 
     /**
