@@ -4,15 +4,14 @@
  */
 package server;
 
-import shared.HRMInterface;
-import model.*;
-
-import java.rmi.server.UnicastRemoteObject;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 import java.sql.*;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
+import model.*;
 import server.classes.*;
+import shared.HRMInterface;
 
 public class HRMImplementation extends UnicastRemoteObject implements HRMInterface {
 
@@ -221,5 +220,30 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
             e.printStackTrace();
             throw new RemoteException("Company Report task execution failed", e);
         }
+    }
+
+    @Override
+    public String registerUser(User user) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String updateUser(User user) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public PersonalDetail getPersonalDetailByUserId(int userId) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String updatePersonalDetail(PersonalDetail detail) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public String changePassword(int userId, String oldPass, String newPass) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
