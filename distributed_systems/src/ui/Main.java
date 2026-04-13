@@ -87,6 +87,15 @@ public class Main extends javax.swing.JFrame {
         password.setText("Password:");
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+        passwordfield.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordfieldActionPerformed(evt);
+            }
+        });
+
+>>>>>>> 69dde09fb7d5f7823a7b7b106fb72a5d3f3ac6e8
         login1.setText("Exit");
         login1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -246,8 +255,15 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_emailfieldActionPerformed
 
+<<<<<<< HEAD
 =======
 >>>>>>> master
+=======
+    private void passwordfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordfieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordfieldActionPerformed
+
+>>>>>>> 69dde09fb7d5f7823a7b7b106fb72a5d3f3ac6e8
     /**
      * @param args the command line arguments
      */

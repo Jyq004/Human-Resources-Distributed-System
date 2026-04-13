@@ -44,10 +44,17 @@ public interface HRMInterface extends Remote {
     String updatePersonalDetail(PersonalDetail detail) throws RemoteException;
     
     String changePassword(int userId, String oldPass, String newPass) throws RemoteException;
+<<<<<<< HEAD
 =======
     // (RYAN) Yearly Leave Report Generation
     String generateIndividualReport(int userId, int year) throws RemoteException;
     
     String generateCompanyReport(int year) throws RemoteException;
 >>>>>>> master
+=======
+    
+    List<LeaveApplication> getLeaveHistory(int userId, String status) throws RemoteException;
+>>>>>>> 69dde09fb7d5f7823a7b7b106fb72a5d3f3ac6e8
 }
+
+

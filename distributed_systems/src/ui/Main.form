@@ -138,6 +138,12 @@
     </Component>
     <Component class="javax.swing.JPasswordField" name="passwordfield">
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="passwordfieldActionPerformed"/>
+      </Events>
+>>>>>>> 69dde09fb7d5f7823a7b7b106fb72a5d3f3ac6e8
     </Component>
     <Component class="javax.swing.JButton" name="login1">
       <Properties>
