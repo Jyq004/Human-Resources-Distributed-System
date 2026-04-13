@@ -24,13 +24,10 @@ public class Main extends javax.swing.JFrame {
     public Main(HRMInterface service) {
         this.service = service;
         initComponents();
-<<<<<<< HEAD
         
         setTitle("Login");
 
         setLocationRelativeTo(null);
-=======
->>>>>>> master
     }
     
     /**
@@ -55,10 +52,7 @@ public class Main extends javax.swing.JFrame {
         email = new javax.swing.JLabel();
         password = new javax.swing.JLabel();
         passwordfield = new javax.swing.JPasswordField();
-<<<<<<< HEAD
         login1 = new javax.swing.JButton();
-=======
->>>>>>> master
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -72,39 +66,22 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-<<<<<<< HEAD
         emailfield.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 emailfieldActionPerformed(evt);
             }
         });
-=======
-        emailfield.setText("jTextField1");
->>>>>>> master
 
         email.setText("Email:");
 
         password.setText("Password:");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-        passwordfield.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                passwordfieldActionPerformed(evt);
-            }
-        });
-
->>>>>>> 69dde09fb7d5f7823a7b7b106fb72a5d3f3ac6e8
         login1.setText("Exit");
         login1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 login1ActionPerformed(evt);
             }
         });
-=======
-        passwordfield.setText("jPasswordField1");
->>>>>>> master
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -112,7 +89,6 @@ public class Main extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-<<<<<<< HEAD
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(emailfield, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -123,26 +99,12 @@ public class Main extends javax.swing.JFrame {
                                 .addComponent(login1)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(login))
-=======
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(88, 88, 88)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
->>>>>>> master
                             .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(password)
                                 .addGap(18, 18, 18)
                                 .addComponent(passwordfield, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-<<<<<<< HEAD
                             .addComponent(Title))))
-=======
-                            .addComponent(Title)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(emailfield, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(login))))
->>>>>>> master
                 .addContainerGap(92, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -158,17 +120,11 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(password)
                     .addComponent(passwordfield, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-<<<<<<< HEAD
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(login1)
                     .addComponent(login))
                 .addContainerGap(40, Short.MAX_VALUE))
-=======
-                .addGap(18, 18, 18)
-                .addComponent(login)
-                .addContainerGap(53, Short.MAX_VALUE))
->>>>>>> master
         );
 
         pack();
@@ -195,7 +151,6 @@ public class Main extends javax.swing.JFrame {
 
         // Show menu based on role
         if (loggedInUser.getRole().equalsIgnoreCase("Employee")) {
-<<<<<<< HEAD
             Employee_Main employeemainpage = new Employee_Main(service, loggedInUser);
             employeemainpage.setVisible(true);
             this.dispose();
@@ -217,26 +172,6 @@ public class Main extends javax.swing.JFrame {
             HR_Main hrmainpage = new HR_Main(service, loggedInUser);
             hrmainpage.setVisible(true);
             this.dispose();     
-=======
-            int balance = service.checkLeaveBalance(loggedInUser.getUserId());
-            JOptionPane.showMessageDialog(this, "Your leave balance: " + balance);
-
-            LeaveApplication leave = new LeaveApplication(
-                loggedInUser.getUserId(),
-                "Annual",
-                LocalDate.of(2026, 4, 1),
-                LocalDate.of(2026, 4, 3),
-                "Vacation"
-            );
-
-            String result = service.applyLeave(leave);
-            JOptionPane.showMessageDialog(this, "Apply leave result: " + result);
-        } else if (loggedInUser.getRole().equalsIgnoreCase("HR")) {
-            HR hrpage = new HR(service);
-            hrpage.setVisible(true);
-            this.dispose();
-            
->>>>>>> master
         }
 
     } catch (Exception ex) {
@@ -245,7 +180,6 @@ public class Main extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_loginActionPerformed
 
-<<<<<<< HEAD
     private void login1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login1ActionPerformed
         // TODO add your handling code here:
         System.exit(0);
@@ -255,15 +189,6 @@ public class Main extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_emailfieldActionPerformed
 
-<<<<<<< HEAD
-=======
->>>>>>> master
-=======
-    private void passwordfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordfieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_passwordfieldActionPerformed
-
->>>>>>> 69dde09fb7d5f7823a7b7b106fb72a5d3f3ac6e8
     /**
      * @param args the command line arguments
      */
@@ -305,10 +230,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JLabel email;
     private javax.swing.JTextField emailfield;
     private javax.swing.JButton login;
-<<<<<<< HEAD
     private javax.swing.JButton login1;
-=======
->>>>>>> master
     private javax.swing.JLabel password;
     private javax.swing.JPasswordField passwordfield;
     // End of variables declaration//GEN-END:variables

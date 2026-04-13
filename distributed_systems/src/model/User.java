@@ -7,21 +7,15 @@ package model;
 import java.io.Serializable;
 
 public class User implements Serializable {
-<<<<<<< HEAD
     
     private static final long serialVersionUID = 1L;
-=======
->>>>>>> master
 
     private int user_id;
     private String first_name;
     private String last_name;
     private String ic_passport_number;
     private String email;
-<<<<<<< HEAD
     private String password;
-=======
->>>>>>> master
     private String role;
 
     public User(int user_id, String first_name, String last_name, String ic_passport_number, String email, String role) {
@@ -33,7 +27,6 @@ public class User implements Serializable {
         this.role = role;
     }
 
-<<<<<<< HEAD
     //Register
     public User(String first_name, String last_name, String ic_passport_number, String email, String password, String role) {
         this.first_name = first_name;
@@ -84,10 +77,4 @@ public class User implements Serializable {
     public String getRole() { 
         return role; 
     }
-=======
-    public int getUserId() { return user_id; }
-    public String getName() { return first_name + " " + last_name; }
-    public String getIc() {return ic_passport_number;}
-    public String getRole() { return role; }
->>>>>>> master
 }

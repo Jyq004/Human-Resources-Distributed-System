@@ -74,14 +74,9 @@ public class HR extends javax.swing.JFrame {
     /**
      * Creates new form HR
      */
-<<<<<<< HEAD
     public HR(HRMInterface service, User user) {
         this.service = service;
         this.loggedInUser = user;
-=======
-    public HR(HRMInterface service) {
-        this.service = service;
->>>>>>> master
         initComponents();
         loadLeaveApplications();
     }
@@ -103,10 +98,7 @@ public class HR extends javax.swing.JFrame {
         reject = new javax.swing.JButton();
         employeeid = new javax.swing.JLabel();
         userid = new javax.swing.JTextField();
-<<<<<<< HEAD
         login1 = new javax.swing.JButton();
-=======
->>>>>>> master
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -126,14 +118,6 @@ public class HR extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         generatereport.setText("Generate Report");
-<<<<<<< HEAD
-=======
-        generatereport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                generatereportActionPerformed(evt);
-            }
-        });
->>>>>>> master
 
         approve.setText("Approve");
         approve.addActionListener(new java.awt.event.ActionListener() {
@@ -158,7 +142,6 @@ public class HR extends javax.swing.JFrame {
             }
         });
 
-<<<<<<< HEAD
         login1.setText("Back");
         login1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -166,8 +149,6 @@ public class HR extends javax.swing.JFrame {
             }
         });
 
-=======
->>>>>>> master
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -182,11 +163,8 @@ public class HR extends javax.swing.JFrame {
                         .addComponent(generatereport))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-<<<<<<< HEAD
                         .addComponent(login1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-=======
->>>>>>> master
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(employeeid, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(approve, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -212,12 +190,8 @@ public class HR extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(reject)
-<<<<<<< HEAD
                     .addComponent(approve)
                     .addComponent(login1))
-=======
-                    .addComponent(approve))
->>>>>>> master
                 .addContainerGap())
         );
 
@@ -256,7 +230,6 @@ public class HR extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_rejectActionPerformed
 
-<<<<<<< HEAD
     private void login1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login1ActionPerformed
         // TODO add your handling code here:
         String role = loggedInUser.getRole();
@@ -282,11 +255,6 @@ public class HR extends javax.swing.JFrame {
 
         this.dispose();
     }//GEN-LAST:event_login1ActionPerformed
-=======
-    private void generatereportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generatereportActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_generatereportActionPerformed
->>>>>>> master
 
     /**
      * @param args the command line arguments
@@ -329,10 +297,7 @@ public class HR extends javax.swing.JFrame {
     private javax.swing.JButton generatereport;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-<<<<<<< HEAD
     private javax.swing.JButton login1;
-=======
->>>>>>> master
     private javax.swing.JButton reject;
     private javax.swing.JLabel title;
     private javax.swing.JTextField userid;

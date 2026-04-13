@@ -25,7 +25,6 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <Group type="103" groupAlignment="1" attributes="0">
-<<<<<<< HEAD
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="emailfield" min="-2" pref="149" max="-2" attributes="0"/>
@@ -38,11 +37,6 @@
                               <EmptySpace max="32767" attributes="0"/>
                               <Component id="login" min="-2" max="-2" attributes="0"/>
                           </Group>
-=======
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
->>>>>>> master
                           <Component id="email" min="-2" pref="37" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="password" min="-2" max="-2" attributes="0"/>
@@ -52,16 +46,6 @@
                           <Component id="Title" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-<<<<<<< HEAD
-=======
-                  <Group type="102" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="emailfield" alignment="1" min="-2" pref="149" max="-2" attributes="0"/>
-                          <Component id="login" alignment="1" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
->>>>>>> master
               </Group>
               <EmptySpace pref="92" max="32767" attributes="0"/>
           </Group>
@@ -82,18 +66,12 @@
                   <Component id="password" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="passwordfield" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-<<<<<<< HEAD
               <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="login1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="login" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="40" max="32767" attributes="0"/>
-=======
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="login" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="53" max="32767" attributes="0"/>
->>>>>>> master
           </Group>
       </Group>
     </DimensionLayout>
@@ -116,15 +94,9 @@
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="emailfield">
-<<<<<<< HEAD
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="emailfieldActionPerformed"/>
       </Events>
-=======
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField1"/>
-      </Properties>
->>>>>>> master
     </Component>
     <Component class="javax.swing.JLabel" name="email">
       <Properties>
@@ -137,13 +109,6 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JPasswordField" name="passwordfield">
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="passwordfieldActionPerformed"/>
-      </Events>
->>>>>>> 69dde09fb7d5f7823a7b7b106fb72a5d3f3ac6e8
     </Component>
     <Component class="javax.swing.JButton" name="login1">
       <Properties>
@@ -152,11 +117,6 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="login1ActionPerformed"/>
       </Events>
-=======
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jPasswordField1"/>
-      </Properties>
->>>>>>> master
     </Component>
   </SubComponents>
 </Form>

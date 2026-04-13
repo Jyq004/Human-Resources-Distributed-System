@@ -4,7 +4,6 @@
  */
 package shared;
 
-<<<<<<< HEAD
 import model.LeaveApplication;
 import model.User;
 import model.PersonalDetail;
@@ -12,13 +11,6 @@ import model.PersonalDetail;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
-=======
-import java.rmi.Remote;
-import java.rmi.RemoteException;
-import java.util.List;
-import model.LeaveApplication;
-import model.User;
->>>>>>> master
 
 public interface HRMInterface extends Remote {
 
@@ -34,7 +26,6 @@ public interface HRMInterface extends Remote {
     
     User getUser(int userId) throws RemoteException;
     
-<<<<<<< HEAD
     String registerUser(User user) throws RemoteException;
     
     String updateUser(User user) throws RemoteException;
@@ -44,17 +35,8 @@ public interface HRMInterface extends Remote {
     String updatePersonalDetail(PersonalDetail detail) throws RemoteException;
     
     String changePassword(int userId, String oldPass, String newPass) throws RemoteException;
-<<<<<<< HEAD
-=======
     // (RYAN) Yearly Leave Report Generation
     String generateIndividualReport(int userId, int year) throws RemoteException;
     
     String generateCompanyReport(int year) throws RemoteException;
->>>>>>> master
-=======
-    
-    List<LeaveApplication> getLeaveHistory(int userId, String status) throws RemoteException;
->>>>>>> 69dde09fb7d5f7823a7b7b106fb72a5d3f3ac6e8
 }
-
-

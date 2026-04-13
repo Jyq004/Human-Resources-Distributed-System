@@ -34,11 +34,8 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-<<<<<<< HEAD
                       <Component id="login1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-=======
->>>>>>> master
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="employeeid" max="32767" attributes="0"/>
                           <Component id="approve" max="32767" attributes="0"/>
@@ -73,10 +70,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="reject" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="approve" alignment="3" min="-2" max="-2" attributes="0"/>
-<<<<<<< HEAD
                   <Component id="login1" alignment="3" min="-2" max="-2" attributes="0"/>
-=======
->>>>>>> master
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -153,12 +147,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Generate Report"/>
       </Properties>
-<<<<<<< HEAD
-=======
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generatereportActionPerformed"/>
-      </Events>
->>>>>>> master
     </Component>
     <Component class="javax.swing.JButton" name="approve">
       <Properties>
@@ -189,7 +177,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useridActionPerformed"/>
       </Events>
     </Component>
-<<<<<<< HEAD
     <Component class="javax.swing.JButton" name="login1">
       <Properties>
         <Property name="text" type="java.lang.String" value="Back"/>
@@ -198,7 +185,5 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="login1ActionPerformed"/>
       </Events>
     </Component>
-=======
->>>>>>> master
   </SubComponents>
 </Form>
