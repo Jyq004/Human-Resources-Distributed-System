@@ -15,25 +15,22 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+
 public class Client {
 
     public static void main(String[] args) {
         try {
-            Registry registry = LocateRegistry.getRegistry("172.20.10.2", 1099);
+            System.setProperty("javax.net.ssl.trustStore", "hr_client_trust.jks");
+            System.setProperty("javax.net.ssl.trustStorePassword", "admin123");
+            
+            Registry registry = LocateRegistry.getRegistry("192.168.100.41", 1099, new SslRMIClientSocketFactory());
             HRMInterface service = (HRMInterface) registry.lookup("HRMService");
 
             javax.swing.SwingUtilities.invokeLater(() -> {
                 Main mainUI = new Main(service);
                 mainUI.setVisible(true);
             });
-            
-//            System.out.println("Service: " + service);
-//            List<LeaveApplication> leaves = service.getAllLeaves();
-//            System.out.println("Leaves count: " + leaves.size());
-//            for (LeaveApplication leave : leaves) {
-//                User user = service.getUser(leave.getUserId());
-//                System.out.println("Leave: " + leave.getLeaveType() + ", User: " + (user != null ? user.getName() : "NULL"));
-//            }
             
         } catch (Exception e) {
             e.printStackTrace();

@@ -4,6 +4,12 @@
  */
 package server;
 
+import javax.rmi.ssl.SslRMIClientSocketFactory;
+import javax.rmi.ssl.SslRMIServerSocketFactory;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLSocket;
+
 import shared.HRMInterface;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -17,13 +23,25 @@ import model.PersonalDetail;
 public class Server {
 
     public static void main(String[] args) {
+        
+        System.setProperty("javax.net.ssl.keyStore", "hr_server.jks");
+        System.setProperty("javax.net.ssl.keyStorePassword", "admin123");
+
+        System.setProperty("javax.net.ssl.trustStore", "hr_client_trust.jks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "admin123");
+        
         new Thread(() -> {
             try {
-                System.setProperty("java.rmi.server.hostname", "localhost");
+                System.setProperty("java.rmi.server.hostname", "192.168.100.41");
 
                 HRMInterface service = new HRMImplementation();
+                
+                Registry registry = LocateRegistry.createRegistry(
+                        1099,
+                        new SslRMIClientSocketFactory(),
+                        new SslRMIServerSocketFactory()
+                );
 
-                Registry registry = LocateRegistry.createRegistry(1099);
                 registry.rebind("HRMService", service);
 
                 System.out.println("RMI Server Running...");
@@ -33,17 +51,24 @@ public class Server {
         }).start();
 
         new Thread(() -> {
-            try (ServerSocket serverSocket = new ServerSocket(5000)) {
+            try {
+                SSLServerSocketFactory ssf =
+                        (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+
+                SSLServerSocket serverSocket =
+                        (SSLServerSocket) ssf.createServerSocket(5000);
+
+                System.out.println("SSL Socket Server Running on port 5000...");
 
                 HRMImplementation impl = new HRMImplementation();
 
                 while (true) {
-                    Socket socket = serverSocket.accept();
+                    SSLSocket socket = (SSLSocket) serverSocket.accept();
 
                     new Thread(() -> {
                         try (
-                            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
                         ) {
 
                             out.flush();
@@ -88,7 +113,6 @@ public class Server {
 
             } catch (Exception e) {
                 e.printStackTrace();
-            }
-        }).start();
+            }        }).start();
     }
 }               
