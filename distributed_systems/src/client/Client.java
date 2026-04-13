@@ -27,6 +27,7 @@ public class Client {
                 mainUI.setVisible(true);
             });
             
+<<<<<<< HEAD
 //            System.out.println("Service: " + service);
 //            List<LeaveApplication> leaves = service.getAllLeaves();
 //            System.out.println("Leaves count: " + leaves.size());
@@ -34,6 +35,15 @@ public class Client {
 //                User user = service.getUser(leave.getUserId());
 //                System.out.println("Leave: " + leave.getLeaveType() + ", User: " + (user != null ? user.getName() : "NULL"));
 //            }
+=======
+            System.out.println("Service: " + service);
+            List<LeaveApplication> leaves = service.getAllLeaves();
+            System.out.println("Leaves count: " + leaves.size());
+            for (LeaveApplication leave : leaves) {
+                User user = service.getUser(leave.getUserId());
+                System.out.println("Leave: " + leave.getLeaveType() + ", User: " + (user != null ? user.getName() : "NULL"));
+            }
+>>>>>>> master
             
         } catch (Exception e) {
             e.printStackTrace();

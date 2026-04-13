@@ -8,8 +8,11 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 public class LeaveApplication implements Serializable {
+<<<<<<< HEAD
     
     private static final long serialVersionUID = 1L;
+=======
+>>>>>>> master
 
     private int leave_id;
     private int user_id;

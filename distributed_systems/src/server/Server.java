@@ -7,16 +7,20 @@ package server;
 import shared.HRMInterface;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+<<<<<<< HEAD
 import java.net.*;
 import java.io.*;
 import model.Request;
 import model.User;
 import model.LeaveApplication;
 import model.PersonalDetail;
+=======
+>>>>>>> master
 
 public class Server {
 
     public static void main(String[] args) {
+<<<<<<< HEAD
         new Thread(() -> {
             try {
                 System.setProperty("java.rmi.server.hostname", "localhost");
@@ -92,3 +96,19 @@ public class Server {
         }).start();
     }
 }               
+=======
+        try {
+            System.setProperty("java.rmi.server.hostname", "localhost");
+
+            HRMInterface service = new HRMImplementation();
+
+            Registry registry = LocateRegistry.createRegistry(1099);
+            registry.rebind("HRMService", service);
+
+            System.out.println("HRM RMI Server Running...");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+>>>>>>> master
