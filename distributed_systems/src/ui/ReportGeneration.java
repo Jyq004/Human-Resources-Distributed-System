@@ -207,8 +207,8 @@ public ReportGeneration(HRMInterface service, User loggedInUser) {
         // TODO add your handling code here:
             try {
         // Go back to HR page (change if needed)
-        HR hrPage = new HR(service, loggedInUser);
-        hrPage.setVisible(true);
+            HR_Main hrmainpage = new HR_Main(service, loggedInUser);
+            hrmainpage.setVisible(true);
 
         // Close current page
         this.dispose();
