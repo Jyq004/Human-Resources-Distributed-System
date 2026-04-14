@@ -39,4 +39,6 @@ public interface HRMInterface extends Remote {
     String generateIndividualReport(int userId, int year) throws RemoteException;
     
     String generateCompanyReport(int year) throws RemoteException;
+    
+    List<LeaveApplication> getLeaveHistory(int userId, String status) throws RemoteException;
 }

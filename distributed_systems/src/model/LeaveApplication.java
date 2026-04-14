@@ -17,6 +17,7 @@ public class LeaveApplication implements Serializable {
     private LocalDate start_date;
     private LocalDate end_date;
     private String reason;
+    private String status;
 
     public LeaveApplication(int user_id, String leave_type,
                             LocalDate start_date, LocalDate end_date, String reason) {
@@ -37,6 +38,16 @@ public class LeaveApplication implements Serializable {
         this.reason = reason;
 
     }
+    
+    public LeaveApplication(int user_id, String leave_type,
+                            LocalDate start_date, LocalDate end_date, String reason, String status) {
+        this.user_id = user_id;
+        this.leave_type = leave_type;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.reason = reason;
+        this.status = status;
+    }
 
     public int getLeaveId() {return leave_id;}
     public int getUserId() { return user_id; }
@@ -44,4 +55,5 @@ public class LeaveApplication implements Serializable {
     public LocalDate getEndDate() { return end_date; }
     public String getLeaveType() { return leave_type; }
     public String getReason() { return reason; }
+    public String getStatus() { return status; }
 }

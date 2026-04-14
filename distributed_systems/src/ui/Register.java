@@ -301,7 +301,7 @@ public class Register extends javax.swing.JFrame {
                 return;
             }
 
-            User user = new User(fnameText, lnameText, icText, emailText, passwordText, roleText);
+            User user = new User(fnameText, lnameText, icText, emailText, passwordText, roleText) {};
             
             try (
                 Socket socket = new Socket("localhost", 5000);
