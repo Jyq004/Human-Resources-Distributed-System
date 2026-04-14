@@ -23,7 +23,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
     @Override
     public User login(String email, String password) throws RemoteException {
         try {
-            return Multithread.executeTask(() -> {
+            return Multithread.executeTask("Login Authentication for " + email, () -> {
                 // Delegated the actual DB logic to LoginClass to improve OOP consistency
                 return LoginClass.authenticate(email, password);
             }).get();
@@ -37,7 +37,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
     @Override
     public int checkLeaveBalance(int userId) throws RemoteException {
         try {
-            return Multithread.executeTask(() -> {
+            return Multithread.executeTask("Check Leave Balance for User " + userId, () -> {
                 try (Connection conn = DBConnection.getConnection()) {
                     String sql = "SELECT total_leave - used_leave AS balance FROM leave_balance WHERE user_id=?";
                     PreparedStatement stmt = conn.prepareStatement(sql);
@@ -63,7 +63,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
     @Override
     public String applyLeave(LeaveApplication leave) throws RemoteException {
         try {
-            return Multithread.executeTask(() -> {
+            return Multithread.executeTask("Apply Leave for User " + leave.getUserId(), () -> {
                 int days = (int) ChronoUnit.DAYS.between(
                         leave.getStartDate(), leave.getEndDate()) + 1;
 
@@ -111,7 +111,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
     @Override
     public List<LeaveApplication> getAllLeaves() throws RemoteException {
         try {
-            return Multithread.executeTask(() -> {
+            return Multithread.executeTask("Get All Pending Leaves", () -> {
                 List<LeaveApplication> list = new ArrayList<>();
                 try (Connection conn = DBConnection.getConnection()) {
                     String sql = "SELECT * FROM leave_application WHERE status = 'Pending'";
@@ -144,7 +144,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
     @Override
     public String updateLeaveStatus(int leaveId, String status) throws RemoteException {
         try {
-            return Multithread.executeTask(() -> {
+            return Multithread.executeTask("Update Leave " + leaveId + " to " + status, () -> {
                 try (Connection conn = DBConnection.getConnection()) {
                     String sql = "UPDATE leave_application SET status=? WHERE leave_id=?";
                     PreparedStatement stmt = conn.prepareStatement(sql);
@@ -168,7 +168,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
 
     public User getUser(int userId) throws RemoteException {
         try {
-            return Multithread.executeTask(() -> {
+            return Multithread.executeTask("Get User Details for ID " + userId, () -> {
                 try (Connection conn = DBConnection.getConnection()) {
                     String sql = "SELECT * FROM user WHERE user_id = ?";
                     PreparedStatement stmt = conn.prepareStatement(sql);
@@ -211,7 +211,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
     @Override
     public String generateIndividualReport(int userId, int year) throws RemoteException {
         try {
-            return Multithread.executeTask(() -> {
+            return Multithread.executeTask("Generate Individual Report (User " + userId + ", Year " + year + ")", () -> {
                 // Offloads to the business class which handles the layout and DAO
                 return YearlyReportClass.generateIndividualReport(userId, year);
             }).get();
@@ -224,7 +224,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
     @Override
     public String generateCompanyReport(int year) throws RemoteException {
         try {
-            return Multithread.executeTask(() -> {
+            return Multithread.executeTask("Generate Company Report (Year " + year + ")", () -> {
                 // Offloads to the business class which handles the layout and DAO
                 return YearlyReportClass.generateCompanyReport(year);
             }).get();
