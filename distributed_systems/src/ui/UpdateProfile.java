@@ -7,6 +7,8 @@ package ui;
 import java.io.*;
 import java.net.*;
 import javax.swing.JOptionPane;
+import model.EmployeeUser;
+import model.HRUser;
 import model.Request;
 import model.User;
 import shared.HRMInterface;
@@ -229,7 +231,18 @@ public class UpdateProfile extends javax.swing.JFrame {
                 return;
             }
 
-            User user = new User(loggedInUser.getUserId(), fnameText, lnameText, icText, emailText);
+            String role = loggedInUser.getRole();
+            User user;
+
+            if (role.equalsIgnoreCase("HR")) {
+                user = new HRUser(loggedInUser.getUserId(), fnameText, lnameText, icText, emailText);
+            } else if (role.equalsIgnoreCase("Employee")) {
+                user = new EmployeeUser(loggedInUser.getUserId(), fnameText, lnameText, icText, emailText);
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid role!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             
             try (
                 Socket socket = new Socket("localhost", 5000);

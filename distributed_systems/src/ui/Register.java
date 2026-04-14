@@ -7,6 +7,8 @@ package ui;
 import java.io.*;
 import java.net.*;
 import javax.swing.JOptionPane;
+import model.EmployeeUser;
+import model.HRUser;
 import model.Request;
 import model.User;
 import shared.HRMInterface;
@@ -301,7 +303,16 @@ public class Register extends javax.swing.JFrame {
                 return;
             }
 
-            User user = new User(fnameText, lnameText, icText, emailText, passwordText, roleText) {};
+            User user;
+
+            if (roleText.equalsIgnoreCase("HR")) {
+                user = new HRUser(fnameText, lnameText, icText, emailText, passwordText, roleText);
+            } else if (roleText.equalsIgnoreCase("Employee")) {
+                user = new EmployeeUser(fnameText, lnameText, icText, emailText, passwordText, roleText);
+            } else {
+                JOptionPane.showMessageDialog(this, "Invalid role!", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             
             try (
                 Socket socket = new Socket("localhost", 5000);
