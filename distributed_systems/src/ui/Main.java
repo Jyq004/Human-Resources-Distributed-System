@@ -149,30 +149,11 @@ public class Main extends javax.swing.JFrame {
 
         JOptionPane.showMessageDialog(this, "Welcome " + loggedInUser.getName());
 
-        // Show menu based on role
-        if (loggedInUser.getRole().equalsIgnoreCase("Employee")) {
-            Employee_Main employeemainpage = new Employee_Main(service, loggedInUser);
-            employeemainpage.setVisible(true);
-            this.dispose();
-            
-//            int balance = service.checkLeaveBalance(loggedInUser.getUserId());
-//            JOptionPane.showMessageDialog(this, "Your leave balance: " + balance);
-//
-//            LeaveApplication leave = new LeaveApplication(
-//                loggedInUser.getUserId(),
-//                "Annual",
-//                LocalDate.of(2026, 4, 1),
-//                LocalDate.of(2026, 4, 3),
-//                "Vacation"
-//            );
-//
-//            String result = service.applyLeave(leave);
-//            JOptionPane.showMessageDialog(this, "Apply leave result: " + result);
-        } else if (loggedInUser.getRole().equalsIgnoreCase("HR")) {
-            HR_Main hrmainpage = new HR_Main(service, loggedInUser);
-            hrmainpage.setVisible(true);
-            this.dispose();     
-        }
+        // --- POLYMORPHISM IN ACTION ---
+        // Dynamically launches Employee_Main or HR_Main depending on the user object,
+        // completely avoiding "if (role == HR)" checks here!
+        loggedInUser.navigateToDashboard(this, service);
+        // ------------------------------
 
     } catch (Exception ex) {
         ex.printStackTrace();

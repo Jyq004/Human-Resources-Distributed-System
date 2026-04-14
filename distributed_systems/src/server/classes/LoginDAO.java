@@ -3,6 +3,8 @@ package server.classes;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import model.EmployeeUser;
+import model.HRUser;
 import model.User;
 import server.DBConnection;
 
@@ -30,14 +32,26 @@ public class LoginDAO {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return new User(
-                        rs.getInt("user_id"),
-                        rs.getString("first_name"),
-                        rs.getString("last_name"),
-                        rs.getString("ic_passport_number"),
-                        rs.getString("email"),
-                        rs.getString("role")
-                );
+                String role = rs.getString("role");
+                if ("HR".equalsIgnoreCase(role)) {
+                    return new HRUser(
+                            rs.getInt("user_id"),
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("ic_passport_number"),
+                            rs.getString("email"),
+                            role
+                    );
+                } else {
+                    return new EmployeeUser(
+                            rs.getInt("user_id"),
+                            rs.getString("first_name"),
+                            rs.getString("last_name"),
+                            rs.getString("ic_passport_number"),
+                            rs.getString("email"),
+                            role
+                    );
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

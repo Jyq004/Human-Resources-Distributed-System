@@ -175,14 +175,26 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
                     stmt.setInt(1, userId);
                     ResultSet rs = stmt.executeQuery();
                     if (rs.next()) {
-                        return new User(
-                            rs.getInt("user_id"),
-                            rs.getString("first_name"),
-                            rs.getString("last_name"),
-                            rs.getString("ic_passport_number"),
-                            rs.getString("email"),
-                            rs.getString("role")
-                        );
+                        String role = rs.getString("role");
+                        if ("HR".equalsIgnoreCase(role)) {
+                            return new HRUser(
+                                rs.getInt("user_id"),
+                                rs.getString("first_name"),
+                                rs.getString("last_name"),
+                                rs.getString("ic_passport_number"),
+                                rs.getString("email"),
+                                role
+                            );
+                        } else {
+                            return new EmployeeUser(
+                                rs.getInt("user_id"),
+                                rs.getString("first_name"),
+                                rs.getString("last_name"),
+                                rs.getString("ic_passport_number"),
+                                rs.getString("email"),
+                                role
+                            );
+                        }
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();

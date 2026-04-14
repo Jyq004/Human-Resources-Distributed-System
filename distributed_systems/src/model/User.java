@@ -6,7 +6,7 @@ package model;
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public abstract class User implements Serializable {
     
     private static final long serialVersionUID = 1L;
 
@@ -16,7 +16,7 @@ public class User implements Serializable {
     private String ic_passport_number;
     private String email;
     private String password;
-    private String role;
+    protected String role;
 
     public User(int user_id, String first_name, String last_name, String ic_passport_number, String email, String role) {
         this.user_id = user_id;
@@ -27,7 +27,11 @@ public class User implements Serializable {
         this.role = role;
     }
 
-    //Register
+    // Abstract method demonstrating Abstraction and Polymorphism
+    // It dynamically routes the user to their correct dashboard.
+    public abstract void navigateToDashboard(javax.swing.JFrame currentWindow, shared.HRMInterface service);
+
+    // Register
     public User(String first_name, String last_name, String ic_passport_number, String email, String password, String role) {
         this.first_name = first_name;
         this.last_name = last_name;
@@ -36,6 +40,7 @@ public class User implements Serializable {
         this.password = password;
         this.role = role;
     }
+
     
     //Update
     public User(int user_id, String first_name, String last_name, String ic_passport_number, String email) {

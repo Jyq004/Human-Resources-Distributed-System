@@ -31,7 +31,8 @@ public class CodingTest {
                 System.out.println("2. Test Login");
                 System.out.println("3. Test Report Generation");
                 System.out.println("4. Test Multithreading (40 Threads)");
-                System.out.println("5. Exit");
+                System.out.println("5. Run Automated Test Suite (Testing Engine Mode)");
+                System.out.println("6. Exit");
                 System.out.print("Select an option: ");
                 
                 String choice = scanner.nextLine();
@@ -52,6 +53,17 @@ public class CodingTest {
                         runMultithreadedReports(service);
                         break;
                     case "5":
+                        System.out.println("\n===== STARTING AUTOMATED TEST SUITE =====");
+                        boolean rmiPass = testConnectionAutomated(registry);
+                        if(rmiPass) {
+                            runAutomatedLoginTests(service);
+                            runAutomatedReportTests(service);
+                            runMultithreadedLogins(service);
+                            runMultithreadedReports(service);
+                        }
+                        System.out.println("===== AUTOMATED TEST SUITE COMPLETED =====\n");
+                        break;
+                    case "6":
                         running = false;
                         System.out.println("Exiting test client.");
                         break;
@@ -68,7 +80,12 @@ public class CodingTest {
 
     private static void testConnection(Registry registry) {
         System.out.println("\n--- Testing Connection ---");
+        testConnectionAutomated(registry);
+    }
+
+    private static boolean testConnectionAutomated(Registry registry) {
         try {
+            System.out.println("[TEST] Checking RMI Registry Connection...");
             String[] boundNames = registry.list();
             boolean found = false;
             for (String name : boundNames) {
@@ -78,12 +95,73 @@ public class CodingTest {
                 }
             }
             if (found) {
-                System.out.println("[Connection Test] SUCCESS: HRMService is bound in the registry.");
+                System.out.println("[PASSED] HRMService is securely bound in the SSL registry.");
+                return true;
             } else {
-                System.out.println("[Connection Test] FAILED: HRMService not found in the registry.");
+                System.out.println("[FAILED] HRMService not found in the registry.");
+                return false;
             }
         } catch (Exception e) {
-            System.out.println("[Connection Test] ERROR: " + e.getMessage());
+            System.out.println("[FAILED] Connection Test ERROR: " + e.getMessage());
+            return false;
+        }
+    }
+
+    private static void runAutomatedLoginTests(HRMInterface service) {
+        System.out.println("\n--- Automated Login Tests ---");
+        
+        // Test 1: Invalid Login
+        System.out.println("[TEST] Attempting login with INVALID credentials...");
+        try {
+            User testUser = service.login("invalid@email.com", "wrongpass");
+            if (testUser == null) {
+                System.out.println("[PASSED] Login properly rejected invalid user.");
+            } else {
+                System.out.println("[FAILED] System allowed an invalid login.");
+            }
+        } catch (Exception e) {
+            System.out.println("[ERROR] " + e.getMessage());
+        }
+
+        // Test 2: Empty Password
+        System.out.println("[TEST] Attempting login with EMPTY password...");
+        try {
+            User testUser = service.login("admin@hr.com", "");
+            if (testUser == null) {
+                System.out.println("[PASSED] Login rejected empty password.");
+            } else {
+                System.out.println("[FAILED] System allowed empty password login.");
+            }
+        } catch (Exception e) {
+            System.out.println("[ERROR] " + e.getMessage());
+        }
+    }
+
+    private static void runAutomatedReportTests(HRMInterface service) {
+        System.out.println("\n--- Automated Report Validation ---");
+        
+        System.out.println("[TEST] Fetching Company Report (Year 2026)...");
+        try {
+            String report = service.generateCompanyReport(2026);
+            if (report != null && report.length() > 0) {
+                System.out.println("[PASSED] Company report returned data successfully.");
+            } else {
+                System.out.println("[FAILED] Company report returning empty data unexpectedly.");
+            }
+        } catch (Exception e) {
+            System.out.println("[ERROR] " + e.getMessage());
+        }
+        
+        System.out.println("[TEST] Fetching Individual Report for user 'Admin'...");
+        try {
+            String report = service.generateIndividualReport(1, 2026); // assuming 1 is valid
+            if (report != null && report.length() > 0) {
+                System.out.println("[PASSED] Individual report returned data successfully.");
+            } else {
+                System.out.println("[FAILED] Individual report was empty.");
+            }
+        } catch (Exception e) {
+            System.out.println("[ERROR] " + e.getMessage());
         }
     }
 
@@ -195,10 +273,20 @@ public class CodingTest {
         try {
             System.out.println("[" + Thread.currentThread().getName() + "] Attempting login for: " + email);
             User user = service.login(email, password);
-            if (user != null) {
-                System.out.println("[" + Thread.currentThread().getName() + "] Login SUCCESS: Welcome " + user.getName() + " (" + user.getRole() + ")");
+            
+            // Testing assertion checks
+            if (email.contains("fake") || password.equals("wrongpass")) {
+                if (user == null) {
+                    System.out.println("[" + Thread.currentThread().getName() + "] [PASSED] Expected Failure for Invalid Credentials.");
+                } else {
+                    System.out.println("[" + Thread.currentThread().getName() + "] [FAILED] Unexpected Success for Invalid Credentials.");
+                }
             } else {
-                System.out.println("[" + Thread.currentThread().getName() + "] Login FAILED: Invalid credentials for " + email);
+                if (user != null) {
+                    System.out.println("[" + Thread.currentThread().getName() + "] [PASSED] Login SUCCESS: Welcome " + user.getName() + " (" + user.getRole() + ")");
+                } else {
+                    System.out.println("[" + Thread.currentThread().getName() + "] [FAILED] Expected Success but Login Failed for " + email);
+                }
             }
         } catch (Exception e) {
             System.out.println("[" + Thread.currentThread().getName() + "] Login ERROR: " + e.getMessage());
@@ -208,9 +296,14 @@ public class CodingTest {
     private static void testIndividualReport(HRMInterface service, int userId, int year) {
         try {
             System.out.println("[" + Thread.currentThread().getName() + "] Requesting individual report for user ID: " + userId + " for year: " + year);
-            // We ignore parsing out the huge report to the console so our logs remain readable, just get the report
             String report = service.generateIndividualReport(userId, year);
-            System.out.println("[" + Thread.currentThread().getName() + "] Individual Report Received. Length: " + report.length());
+            
+            // Testing assertion checks
+            if (report != null && !report.trim().isEmpty()) {
+                System.out.println("[" + Thread.currentThread().getName() + "] [PASSED] Individual Report Received. Length: " + report.length());
+            } else {
+                System.out.println("[" + Thread.currentThread().getName() + "] [FAILED] Report was null or empty.");
+            }
         } catch (Exception e) {
              System.out.println("[" + Thread.currentThread().getName() + "] Individual Report ERROR: " + e.getMessage());
         }
@@ -220,7 +313,13 @@ public class CodingTest {
         try {
             System.out.println("[" + Thread.currentThread().getName() + "] Requesting company report for year: " + year);
             String report = service.generateCompanyReport(year);
-            System.out.println("[" + Thread.currentThread().getName() + "] Company Report Received. Length: " + report.length());
+            
+            // Testing assertion checks
+            if (report != null && !report.trim().isEmpty()) {
+                 System.out.println("[" + Thread.currentThread().getName() + "] [PASSED] Company Report Received. Length: " + report.length());
+            } else {
+                 System.out.println("[" + Thread.currentThread().getName() + "] [FAILED] Company Report was null or empty.");
+            }
         } catch (Exception e) {
              System.out.println("[" + Thread.currentThread().getName() + "] Company Report ERROR: " + e.getMessage());
         }
