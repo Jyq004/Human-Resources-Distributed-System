@@ -24,7 +24,7 @@ public class Client {
             System.setProperty("javax.net.ssl.trustStore", "hr_client_trust.jks");
             System.setProperty("javax.net.ssl.trustStorePassword", "admin123");
             
-            Registry registry = LocateRegistry.getRegistry("192.168.100.41", 1099, new SslRMIClientSocketFactory());
+            Registry registry = LocateRegistry.getRegistry("10.101.124.149", 1099, new SslRMIClientSocketFactory());
             HRMInterface service = (HRMInterface) registry.lookup("HRMService");
 
             javax.swing.SwingUtilities.invokeLater(() -> {
