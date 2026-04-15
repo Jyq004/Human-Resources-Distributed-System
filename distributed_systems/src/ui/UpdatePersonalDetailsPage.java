@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JOptionPane;
 import model.User;
 import model.PersonalDetail;
@@ -308,10 +310,21 @@ public class UpdatePersonalDetailsPage extends javax.swing.JFrame {
 
             PersonalDetail pd = new PersonalDetail(loggedInUser.getUserId(), phoneText, addressText, dobText, connameText, relationText, connumText);
             
+            System.setProperty("javax.net.ssl.trustStore", "hr_client_trust.jks");
+            System.setProperty("javax.net.ssl.trustStorePassword", "admin123");
+
+            SSLSocketFactory factory =
+                    (SSLSocketFactory) SSLSocketFactory.getDefault();
+
             try (
-                Socket socket = new Socket("localhost", 5000);
-                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                SSLSocket socket =
+                        (SSLSocket) factory.createSocket("192.168.100.41", 5000);
+
+                ObjectOutputStream out =
+                        new ObjectOutputStream(socket.getOutputStream());
+
+                ObjectInputStream in =
+                        new ObjectInputStream(socket.getInputStream());
             ) {
 
                 out.flush();

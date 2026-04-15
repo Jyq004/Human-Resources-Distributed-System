@@ -3,27 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/server/classes/ReportDAO.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/server/classes/YearlyReportClass.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/server/Server.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/ui/ViewLeaveStatus.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/ui/Register.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/server/HRMImplementation.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/ui/HR_Main.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/ui/ViewLeaveHistory.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/ui/Main.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/model/User.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/server/classes/LoginClass.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/ui/HR.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/server/Multithread.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/server/classes/LoginDAO.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/model/Request.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/ui/ReportGeneration.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/shared/HRMInterface.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/client/Client.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/ui/Employee_Main.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/server/classes/Multithread.java</file>
-            <file>file:/C:/java/Human-Resources-Distributed-System/distributed_systems/src/server/DBConnection.java</file>
+            <file>file:/D:/D/GITHUB/Human-Resources-Distributed-System/distributed_systems/src/ui/ApplyLeave.java</file>
+            <file>file:/D:/D/GITHUB/Human-Resources-Distributed-System/distributed_systems/src/ui/UpdatePersonalDetailsPage.java</file>
+            <file>file:/D:/D/GITHUB/Human-Resources-Distributed-System/distributed_systems/src/ui/UpdateProfile.java</file>
+            <file>file:/D:/D/GITHUB/Human-Resources-Distributed-System/distributed_systems/src/server/Server.java</file>
+            <file>file:/D:/D/GITHUB/Human-Resources-Distributed-System/distributed_systems/src/ui/Register.java</file>
+            <file>file:/D:/D/GITHUB/Human-Resources-Distributed-System/distributed_systems/src/client/Client.java</file>
+            <file>file:/D:/D/GITHUB/Human-Resources-Distributed-System/distributed_systems/src/ui/ReportGeneration.java</file>
         </group>
     </open-files>
 </project-private>

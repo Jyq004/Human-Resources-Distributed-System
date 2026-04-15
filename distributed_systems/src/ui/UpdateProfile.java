@@ -6,6 +6,8 @@ package ui;
 
 import java.io.*;
 import java.net.*;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import javax.swing.JOptionPane;
 import model.EmployeeUser;
 import model.HRUser;
@@ -244,10 +246,21 @@ public class UpdateProfile extends javax.swing.JFrame {
             }
 
             
+            System.setProperty("javax.net.ssl.trustStore", "hr_client_trust.jks");
+            System.setProperty("javax.net.ssl.trustStorePassword", "admin123");
+
+            SSLSocketFactory factory =
+                    (SSLSocketFactory) SSLSocketFactory.getDefault();
+
             try (
-                Socket socket = new Socket("localhost", 5000);
-                ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+                SSLSocket socket =
+                        (SSLSocket) factory.createSocket("192.168.100.41", 5000);
+
+                ObjectOutputStream out =
+                        new ObjectOutputStream(socket.getOutputStream());
+
+                ObjectInputStream in =
+                        new ObjectInputStream(socket.getInputStream());
             ) {
 
                 out.flush();

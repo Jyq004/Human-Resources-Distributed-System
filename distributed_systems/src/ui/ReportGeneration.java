@@ -57,14 +57,12 @@ public ReportGeneration(HRMInterface service, User loggedInUser) {
             }
         });
 
-        YearField.setText("jTextField1");
         YearField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 YearFieldActionPerformed(evt);
             }
         });
 
-        EmployeeField.setText("jTextField2");
         EmployeeField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EmployeeFieldActionPerformed(evt);
