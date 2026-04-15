@@ -140,31 +140,63 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
         }
     }
 
-    // ✅ APPROVE / REJECT
+    // (HR) APPROVE / REJECT LEAVE 
     @Override
     public String updateLeaveStatus(int leaveId, String status) throws RemoteException {
         try {
-            return Multithread.executeTask("Update Leave " + leaveId + " to " + status, () -> {
+            return Multithread.executeTask(() -> {
                 try (Connection conn = DBConnection.getConnection()) {
-                    String sql = "UPDATE leave_application SET status=? WHERE leave_id=?";
-                    PreparedStatement stmt = conn.prepareStatement(sql);
 
-                    stmt.setString(1, status);
-                    stmt.setInt(2, leaveId);
+                    // Get leave details
+                    String selectSql = "SELECT user_id, start_date, end_date FROM leave_application WHERE leave_id=?";
+                    PreparedStatement selectStmt = conn.prepareStatement(selectSql);
+                    selectStmt.setInt(1, leaveId);
 
-                    stmt.executeUpdate();
+                    ResultSet rs = selectStmt.executeQuery();
 
-                    return "✅ Updated to " + status;
+                    if (!rs.next()) {
+                        return "Leave not found";
+                    }
+
+                    int userId = rs.getInt("user_id");
+                    java.time.LocalDate start = rs.getDate("start_date").toLocalDate();
+                    java.time.LocalDate end = rs.getDate("end_date").toLocalDate();
+
+                    int days = (int) java.time.temporal.ChronoUnit.DAYS.between(start, end) + 1;
+
+                    // Update leave status
+                    String updateSql = "UPDATE leave_application SET status=? WHERE leave_id=?";
+                    PreparedStatement updateStmt = conn.prepareStatement(updateSql);
+
+                    updateStmt.setString(1, status);
+                    updateStmt.setInt(2, leaveId);
+                    updateStmt.executeUpdate();
+
+                    // If approved → update balance
+                    if (status.equalsIgnoreCase("Approved")) {
+
+                        String balanceSql = "UPDATE leave_balance SET used_leave = used_leave + ? WHERE user_id=?";
+                        PreparedStatement balanceStmt = conn.prepareStatement(balanceSql);
+
+                        balanceStmt.setInt(1, days);
+                        balanceStmt.setInt(2, userId);
+                        balanceStmt.executeUpdate();
+                    }
+
+                    return "Leave " + status + " (" + days + " days)";
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                return "❌ Failed";
+                return "Failed";
             }).get();
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new RemoteException("Update leave status task execution failed", e);
         }
     }
+
 
     public User getUser(int userId) throws RemoteException {
         try {
