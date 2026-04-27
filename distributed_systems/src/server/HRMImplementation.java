@@ -19,7 +19,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
         super();
     }
 
-    // 🔐 LOGIN
+    // LOGIN
     @Override
     public User login(String email, String password) throws RemoteException {
         try {
@@ -33,7 +33,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
         }
     }
 
-    // 📊 CHECK BALANCE
+    // CHECK BALANCE
     @Override
     public int checkLeaveBalance(int userId) throws RemoteException {
         try {
@@ -59,7 +59,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
         }
     }
 
-    // 🏖️ APPLY LEAVE
+    // APPLY LEAVE
     @Override
     public String applyLeave(LeaveApplication leave) throws RemoteException {
         try {
@@ -107,7 +107,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
         }
     }
 
-    // 🧑‍💼 HR VIEW ALL
+    // HR VIEW ALL
     @Override
     public List<LeaveApplication> getAllLeaves() throws RemoteException {
         try {
@@ -144,7 +144,7 @@ public class HRMImplementation extends UnicastRemoteObject implements HRMInterfa
     @Override
     public String updateLeaveStatus(int leaveId, String status) throws RemoteException {
         try {
-            return Multithread.executeTask(() -> {
+            return Multithread.executeTask("HR Approve/Reject Leaves",() -> {
                 try (Connection conn = DBConnection.getConnection()) {
 
                     // Get leave details
