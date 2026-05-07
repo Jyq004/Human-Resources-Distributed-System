@@ -29,22 +29,14 @@
                   <Component id="jScrollPane1" alignment="1" pref="590" max="32767" attributes="0"/>
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="title" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace max="32767" attributes="0"/>
-                      <Component id="generatereport" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       <Component id="login1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="employeeid" max="32767" attributes="0"/>
-                          <Component id="approve" max="32767" attributes="0"/>
-                      </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Component id="approve" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="reject" max="32767" attributes="0"/>
-                          <Component id="userid" pref="76" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="reject" min="-2" pref="76" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
@@ -55,18 +47,10 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="title" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="generatereport" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
+              <Component id="title" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="256" max="-2" attributes="0"/>
-              <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="employeeid" alignment="3" max="32767" attributes="0"/>
-                  <Component id="userid" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jScrollPane1" min="-2" pref="286" max="-2" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="reject" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="approve" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -93,7 +77,8 @@
         <Component class="javax.swing.JTable" name="jTable1">
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-              <Table columnCount="6" rowCount="4">
+              <Table columnCount="7" rowCount="4">
+                <Column editable="true" title="Leave ID" type="java.lang.Object"/>
                 <Column editable="true" title="Employee ID" type="java.lang.Object"/>
                 <Column editable="true" title="Name" type="java.lang.Object"/>
                 <Column editable="true" title="Leave Type" type="java.lang.Object"/>
@@ -134,6 +119,11 @@
                   <Editor/>
                   <Renderer/>
                 </Column>
+                <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                  <Title/>
+                  <Editor/>
+                  <Renderer/>
+                </Column>
               </TableColumnModel>
             </Property>
             <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -143,11 +133,6 @@
         </Component>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="generatereport">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Generate Report"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JButton" name="approve">
       <Properties>
         <Property name="text" type="java.lang.String" value="Approve"/>
@@ -162,19 +147,6 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="rejectActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JLabel" name="employeeid">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Employee ID:"/>
-      </Properties>
-    </Component>
-    <Component class="javax.swing.JTextField" name="userid">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="jTextField1"/>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="useridActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="login1">
